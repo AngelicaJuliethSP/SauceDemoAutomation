@@ -1,12 +1,11 @@
 package com.saucedemo.pages;
 
-import com.saucedemo.base.BaseTest;
-import com.saucedemo.base.BaseTest;
+import com.saucedemo.base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class LoginPage extends BaseTest {
+public class LoginPage extends BasePage {
 
     @FindBy(id = "user-name")
     private WebElement usernameInput;
