@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.nio.file.Path;
 
-public class ScreenshotListener {
+public class ScreenshotListener implements  ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
