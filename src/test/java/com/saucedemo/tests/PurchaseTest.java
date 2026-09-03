@@ -22,4 +22,5 @@ public class PurchaseTest extends BaseTest{
         Assert.assertEquals(completePage.getThankYouMessage(), "Thank you for your order!",
                 "The confirmation message was not displayed correctly.");
     }
+
 }

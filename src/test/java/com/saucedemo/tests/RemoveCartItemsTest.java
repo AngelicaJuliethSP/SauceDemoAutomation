@@ -26,4 +26,5 @@ public class RemoveCartItemsTest extends BaseTest{
         Assert.assertEquals(cartPage.getCartItemsCount(), 0,
                 "The cart should be empty after removing all items.");
     }
+
 }
