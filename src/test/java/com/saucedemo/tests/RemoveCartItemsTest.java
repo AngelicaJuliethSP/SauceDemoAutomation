@@ -7,6 +7,8 @@ import com.saucedemo.pages.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Listeners(com.saucedemo.listeners.ScreenshotListener.class)
+
 public class RemoveCartItemsTest extends BaseTest{
 
     @Test
