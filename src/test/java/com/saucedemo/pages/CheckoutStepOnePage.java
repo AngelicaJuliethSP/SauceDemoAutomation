@@ -4,6 +4,10 @@ import com.saucedemo.base.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class CheckoutStepOnePage extends BasePage {
 
@@ -27,7 +31,11 @@ public class CheckoutStepOnePage extends BasePage {
         firstNameInput.sendKeys(firstName);
         lastNameInput.sendKeys(lastName);
         postalCodeInput.sendKeys(postalCode);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton));
         continueButton.click();
+
         return new CheckoutStepTwoPage(driver);
     }
 }
