@@ -22,6 +22,7 @@ This project automates three core user flows on the SauceDemo web application:
 
 ## Project Structure
 
+```
 SauceDemoAutomation/
 ├── src/
 │ ├── main/java/ # Application-level code (currently unused)
@@ -46,7 +47,7 @@ SauceDemoAutomation/
 ├── pom.xml
 ├── .gitignore
 └── README.md
-
+```
 
 ## Design Decisions
 
@@ -78,8 +79,6 @@ Or, from IntelliJ IDEA: right-click the `tests` package → **Run 'Tests in com.
 - Google Chrome installed (ChromeDriver is resolved automatically via Selenium Manager)
 
 ## Test Evidence
-
-# Test Evidence
 
 A screenshot confirming successful execution of all test scenarios (`Tests run: 4, Failures: 0`) is available at `screenshots/test-execution-success.png`.
 
