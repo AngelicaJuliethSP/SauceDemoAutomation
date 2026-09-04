@@ -6,6 +6,7 @@ import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.pages.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.annotations.Listeners;
 
 @Listeners(com.saucedemo.listeners.ScreenshotListener.class)
 
