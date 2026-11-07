@@ -17,7 +17,7 @@ This project automates three core user flows on the SauceDemo web application:
 | Java | 17 | Programming language |
 | Maven | 3.x | Build and dependency management |
 | Selenium WebDriver | 4.47.0 | Browser automation |
-| TestNG | 7.5 | Test runner and annotations |
+| TestNG | 7.10.2 | Test runner and annotations |
 | Chrome | Latest | Target browser |
 
 ## Project Structure
@@ -56,6 +56,7 @@ SauceDemoAutomation/
 - **Shared base classes**: `BaseTest` centralizes WebDriver lifecycle management; `BasePage` centralizes Page Factory initialization and cross-page functionality (logout menu, available from any logged-in page).
 - **Explicit waits**: Applied at specific points in the checkout flow where page transitions proved unreliable with certain SauceDemo test users, using `WebDriverWait` with `ExpectedConditions`.
 - **Chrome preferences**: Password leak detection and the password manager are disabled via `ChromeOptions` to prevent native browser dialogs from interfering with test execution.
+- **Externalized configuration**: base URL and headless mode are resolved with the priority `-Dsystem property` → `environment variable` → `default value`, so the suite runs on any machine (including CI agents) without code changes.
 
 ## Advanced TestNG Features
 
@@ -77,6 +78,19 @@ Or, from IntelliJ IDEA: right-click the `tests` package → **Run 'Tests in com.
 - JDK 17 or higher
 - Maven 3.6+
 - Google Chrome installed (ChromeDriver is resolved automatically via Selenium Manager)
+
+### Configuration Options
+
+| Parameter | System property | Environment variable | Default |
+|---|---|---|---|
+| Base URL | `-Dbase.url` | `BASE_URL` | `https://www.saucedemo.com/` |
+| Headless mode | `-Dheadless=true` | `HEADLESS=true` | `false` |
+
+Example with custom configuration:
+
+```bash
+mvn clean test -Dheadless=true -Dbase.url=https://www.saucedemo.com/
+```
 
 ## Test Evidence
 
