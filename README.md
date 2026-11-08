@@ -1,126 +1,126 @@
-# SauceDemo Automation Framework
+# Framework de Automatización SauceDemo
 
-Test automation framework for [SauceDemo](https://www.saucedemo.com/) built with Selenium WebDriver, Java, and TestNG, following the Page Object Model (POM) design pattern with Page Factory.
+Framework de automatización de pruebas para [SauceDemo](https://www.saucedemo.com/) construido con Selenium WebDriver, Java y TestNG, siguiendo el patrón de diseño Page Object Model (POM) con Page Factory.
 
-## Overview
+## Descripción general
 
-This project automates three core user flows on the SauceDemo web application:
+Este proyecto automatiza tres flujos de usuario principales de la aplicación web SauceDemo:
 
-- **Purchase flow**: Complete end-to-end checkout, from login to order confirmation, selecting a random product.
-- **Cart management**: Add three different products to the cart, remove them, and verify the cart is empty.
-- **Logout**: Verify the user is correctly redirected to the login page after logging out.
+- **Flujo de compra**: checkout completo de extremo a extremo, desde el login hasta la confirmación del pedido, seleccionando un producto aleatorio.
+- **Gestión del carrito**: agregar tres productos diferentes al carrito, eliminarlos y verificar que el carrito quede vacío.
+- **Logout**: verificar que el usuario sea redirigido correctamente a la página de login después de cerrar sesión.
 
-## Tech Stack
+## Stack tecnológico
 
-| Tool | Version | Purpose |
+| Herramienta | Versión | Propósito |
 |---|---|---|
-| Java | 17 | Programming language |
-| Maven | 3.x | Build and dependency management |
-| Selenium WebDriver | 4.47.0 | Browser automation |
-| TestNG | 7.10.2 | Test runner and annotations |
-| Chrome | Latest | Target browser |
+| Java | 17 | Lenguaje de programación |
+| Maven | 3.x | Compilación y gestión de dependencias |
+| Selenium WebDriver | 4.47.0 | Automatización del navegador |
+| TestNG | 7.10.2 | Ejecutor de pruebas y anotaciones |
+| Chrome | Última | Navegador objetivo |
 
-## Project Structure
+## Estructura del proyecto
 
 ```
 SauceDemoAutomation/
 ├── src/
-│ ├── main/java/ # Application-level code (currently unused)
-│ └── test/java/com/saucedemo/
-│ ├── base/
-│ │ ├── BaseTest.java # WebDriver setup/teardown (@BeforeMethod/@AfterMethod)
-│ │ └── BasePage.java # Page Factory initialization, shared logout logic
-│ ├── pages/
-│ │ ├── LoginPage.java
-│ │ ├── InventoryPage.java
-│ │ ├── CartPage.java
-│ │ ├── CheckoutStepOnePage.java
-│ │ ├── CheckoutStepTwoPage.java
-│ │ └── CheckoutCompletePage.java
-│ ├── listeners/
-│ │ └── ScreenshotListener.java # Auto screenshot capture on test failure
-│ └── tests/
-│ ├── PurchaseTest.java # Uses @DataProvider for multiple users
-│ ├── RemoveCartItemsTest.java
-│ └── LogoutTest.java
-├── screenshots/ # Auto-generated on test failures
+│   ├── main/java/                  # Código a nivel de aplicación (actualmente sin uso)
+│   └── test/java/com/saucedemo/
+│       ├── base/
+│       │   ├── BaseTest.java       # Setup/teardown de WebDriver (@BeforeMethod/@AfterMethod)
+│       │   └── BasePage.java       # Inicialización de Page Factory, lógica compartida de logout
+│       ├── pages/
+│       │   ├── LoginPage.java
+│       │   ├── InventoryPage.java
+│       │   ├── CartPage.java
+│       │   ├── CheckoutStepOnePage.java
+│       │   ├── CheckoutStepTwoPage.java
+│       │   └── CheckoutCompletePage.java
+│       ├── listeners/
+│       │   └── ScreenshotListener.java  # Captura automática de pantallas en fallos
+│       └── tests/
+│           ├── PurchaseTest.java   # Usa @DataProvider para múltiples usuarios
+│           ├── RemoveCartItemsTest.java
+│           └── LogoutTest.java
+├── screenshots/                    # Generadas automáticamente en fallos de pruebas
 ├── pom.xml
 ├── .gitignore
 └── README.md
 ```
 
-## Design Decisions
+## Decisiones de diseño
 
-- **Page Object Model with Page Factory**: Each page is represented by a class using `@FindBy` annotations. Locators live exclusively in page classes; test classes never interact with `WebElement` directly.
-- **Method chaining across pages**: Any method that triggers navigation returns the next page's Page Object (e.g. `login()` returns `InventoryPage`), keeping tests fluent and decoupled from implementation details.
-- **Shared base classes**: `BaseTest` centralizes WebDriver lifecycle management; `BasePage` centralizes Page Factory initialization and cross-page functionality (logout menu, available from any logged-in page).
-- **Explicit waits**: Applied at specific points in the checkout flow where page transitions proved unreliable with certain SauceDemo test users, using `WebDriverWait` with `ExpectedConditions`.
-- **Chrome preferences**: Password leak detection and the password manager are disabled via `ChromeOptions` to prevent native browser dialogs from interfering with test execution.
-- **Externalized configuration**: base URL and headless mode are resolved with the priority `-Dsystem property` → `environment variable` → `default value`, so the suite runs on any machine (including CI agents) without code changes.
+- **Page Object Model con Page Factory**: cada página está representada por una clase que usa anotaciones `@FindBy`. Los localizadores viven exclusivamente en las clases de páginas; las clases de pruebas nunca interactúan directamente con `WebElement`.
+- **Encadenamiento de métodos entre páginas**: cualquier método que dispara navegación devuelve el Page Object de la página siguiente (p. ej., `login()` devuelve `InventoryPage`), manteniendo las pruebas fluidas y desacopladas de los detalles de implementación.
+- **Clases base compartidas**: `BaseTest` centraliza la gestión del ciclo de vida de WebDriver; `BasePage` centraliza la inicialización de Page Factory y la funcionalidad entre páginas (menú de logout, disponible desde cualquier página con sesión iniciada).
+- **Esperas explícitas**: aplicadas en puntos específicos del flujo de checkout donde las transiciones de página resultaron poco confiables con ciertos usuarios de prueba de SauceDemo, usando `WebDriverWait` con `ExpectedConditions`.
+- **Preferencias de Chrome**: la detección de fugas de contraseñas y el gestor de contraseñas se desactivan vía `ChromeOptions` para evitar que los diálogos nativos del navegador interfieran con la ejecución de las pruebas.
+- **Configuración externalizada**: la URL base y el modo headless se resuelven con la prioridad `propiedad del sistema -D` → `variable de entorno` → `valor por defecto`, de modo que la suite corre en cualquier máquina (incluidos agentes de CI) sin cambios de código.
 
-## Advanced TestNG Features
+## Características avanzadas de TestNG
 
-- **`@DataProvider`** in `PurchaseTest`: runs the purchase flow against multiple SauceDemo users (`standard_user`, `performance_glitch_user`) to validate the flow across different simulated user behaviors.
-- **Custom `ITestListener`** (`ScreenshotListener`): automatically captures a screenshot whenever a test fails, saved to the `screenshots/` directory with a timestamped filename for traceability.
+- **`@DataProvider`** en `PurchaseTest`: ejecuta el flujo de compra contra múltiples usuarios de SauceDemo (`standard_user`, `performance_glitch_user`) para validar el flujo con diferentes comportamientos de usuario simulados.
+- **`ITestListener` personalizado** (`ScreenshotListener`): captura automáticamente una captura de pantalla cada vez que una prueba falla, guardada en el directorio `screenshots/` con un nombre de archivo con marca de tiempo para trazabilidad.
 
-## How to Run
+## Cómo ejecutar
 
-Clone the repository and run:
+Clona el repositorio y ejecuta:
 
 ```bash
 mvn clean test
 ```
 
-Or, from IntelliJ IDEA: right-click the `tests` package → **Run 'Tests in com.saucedemo.tests'**.
+O, desde IntelliJ IDEA: clic derecho sobre el paquete `tests` → **Run 'Tests in com.saucedemo.tests'**.
 
-### Prerequisites
+### Prerrequisitos
 
-- JDK 17 or higher
+- JDK 17 o superior
 - Maven 3.6+
-- Google Chrome installed (ChromeDriver is resolved automatically via Selenium Manager)
+- Google Chrome instalado (ChromeDriver se resuelve automáticamente vía Selenium Manager)
 
-### Configuration Options
+### Opciones de configuración
 
-| Parameter | System property | Environment variable | Default |
+| Parámetro | Propiedad del sistema | Variable de entorno | Por defecto |
 |---|---|---|---|
-| Base URL | `-Dbase.url` | `BASE_URL` | `https://www.saucedemo.com/` |
-| Headless mode | `-Dheadless=true` | `HEADLESS=true` | `false` |
+| URL base | `-Dbase.url` | `BASE_URL` | `https://www.saucedemo.com/` |
+| Modo headless | `-Dheadless=true` | `HEADLESS=true` | `false` |
 
-Example with custom configuration:
+Ejemplo con configuración personalizada:
 
 ```bash
 mvn clean test -Dheadless=true -Dbase.url=https://www.saucedemo.com/
 ```
 
-## Test Evidence
+## Evidencia de pruebas
 
-A screenshot confirming successful execution of all test scenarios (`Tests run: 4, Failures: 0`) is available at `screenshots/test-execution-success.png`.
+Una captura de pantalla que confirma la ejecución exitosa de todos los escenarios de prueba (`Tests run: 4, Failures: 0`) está disponible en `screenshots/test-execution-success.png`.
 
-## CI/CD Pipeline
+## Pipeline CI/CD
 
-The suite runs automatically on GitHub Actions on every push/PR to `main`,
-manually (workflow_dispatch), and **daily at 06:00 UTC (01:00 Colombia)** via
-cron. Each run produces:
+La suite corre automáticamente en GitHub Actions en cada push/PR a `main`,
+manualmente (workflow_dispatch) y **a diario a las 06:00 UTC (01:00 Colombia)**
+vía cron. Cada ejecución produce:
 
-| Artifact | Description |
+| Artefacto | Descripción |
 |---|---|
-| `surefire-reports-web` | Surefire XML reports |
-| `allure-results-web` | Allure raw results |
-| `allure-report-web` | Navigable Allure HTML report |
+| `surefire-reports-web` | Reportes XML de Surefire |
+| `allure-results-web` | Resultados crudos de Allure |
+| `allure-report-web` | Reporte HTML navegable de Allure |
 
-### Automatic Dashboard Publishing
+### Publicación automática al dashboard
 
-After every run (even on failure), the pipeline parses the Surefire XML and
-pushes the consolidated results to
+Después de cada ejecución (incluso con fallos), el pipeline parsea los XML de
+Surefire y publica los resultados consolidados en
 [Proyecto-grado-dashboard](https://github.com/AngelicaJuliethSP/Proyecto-grado-dashboard),
-which feeds the public QA dashboard:
+que alimenta el dashboard público de QA:
 **https://proyecto-grado-dashboard.streamlit.app**
 
-This makes the dashboard update **fully automatically** — no manual steps.
-It requires the `DASHBOARD_TOKEN` secret (fine-grained PAT with write access
-to the dashboard repo). If the secret is missing, the step is skipped
-gracefully and the run is not affected.
+Esto hace que el dashboard se actualice de forma **100 % automática** — sin
+pasos manuales. Requiere el secreto `DASHBOARD_TOKEN` (PAT fine-grained con
+acceso de escritura al repo del dashboard). Si el secreto no existe, el paso
+se omite de forma controlada y la ejecución no se ve afectada.
 
-## Author
+## Autora
 
 Angélica Julieth Silva Pérez — College Trainee, Globant
