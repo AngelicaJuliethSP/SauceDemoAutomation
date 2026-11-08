@@ -12,6 +12,7 @@ import java.time.Duration;
 public class BasePage {
 
     protected WebDriver driver;
+    protected WebDriverWait wait;
 
     @FindBy(id = "react-burger-menu-btn")
     private WebElement menuButton;
@@ -22,6 +23,15 @@ public class BasePage {
     public BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    }
+
+    /**
+     * Espera hasta que el elemento sea visible y lo retorna.
+     * Punto único de espera del framework: todas las páginas heredan este helper.
+     */
+    protected WebElement waitForVisible(WebElement element) {
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public com.saucedemo.pages.LoginPage logout() {

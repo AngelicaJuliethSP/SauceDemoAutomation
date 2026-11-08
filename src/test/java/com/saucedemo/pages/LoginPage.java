@@ -19,6 +19,9 @@ public class LoginPage extends BasePage {
     @FindBy(css = "[data-test='error']")
     private WebElement errorMessage;
 
+    @FindBy(id = "inventory_container")
+    private WebElement inventoryContainer;
+
     public LoginPage(WebDriver driver) {
         super(driver);
     }
@@ -27,6 +30,9 @@ public class LoginPage extends BasePage {
         usernameInput.sendKeys(username);
         passwordInput.sendKeys(password);
         loginButton.click();
+        // Espera a que el inventario termine de renderizar (React) antes de
+        // retornar; evita clicks perdidos sobre botones aún no presentes.
+        waitForVisible(inventoryContainer);
         return new InventoryPage(driver);
     }
 

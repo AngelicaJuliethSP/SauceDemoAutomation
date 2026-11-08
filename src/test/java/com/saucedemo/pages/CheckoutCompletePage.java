@@ -15,6 +15,8 @@ public class CheckoutCompletePage extends BasePage {
     }
 
     public String getThankYouMessage() {
-        return thankYouMessage.getText();
+        // Espera el mensaje: con performance_glitch_user el sitio tarda en
+        // renderizar la confirmación y una lectura directa lanza NoSuchElement.
+        return waitForVisible(thankYouMessage).getText();
     }
 }
