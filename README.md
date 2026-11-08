@@ -96,6 +96,31 @@ mvn clean test -Dheadless=true -Dbase.url=https://www.saucedemo.com/
 
 A screenshot confirming successful execution of all test scenarios (`Tests run: 4, Failures: 0`) is available at `screenshots/test-execution-success.png`.
 
+## CI/CD Pipeline
+
+The suite runs automatically on GitHub Actions on every push/PR to `main`,
+manually (workflow_dispatch), and **daily at 06:00 UTC (01:00 Colombia)** via
+cron. Each run produces:
+
+| Artifact | Description |
+|---|---|
+| `surefire-reports-web` | Surefire XML reports |
+| `allure-results-web` | Allure raw results |
+| `allure-report-web` | Navigable Allure HTML report |
+
+### Automatic Dashboard Publishing
+
+After every run (even on failure), the pipeline parses the Surefire XML and
+pushes the consolidated results to
+[Proyecto-grado-dashboard](https://github.com/AngelicaJuliethSP/Proyecto-grado-dashboard),
+which feeds the public QA dashboard:
+**https://proyecto-grado-dashboard.streamlit.app**
+
+This makes the dashboard update **fully automatically** — no manual steps.
+It requires the `DASHBOARD_TOKEN` secret (fine-grained PAT with write access
+to the dashboard repo). If the secret is missing, the step is skipped
+gracefully and the run is not affected.
+
 ## Author
 
 Angélica Julieth Silva Pérez — College Trainee, Globant
