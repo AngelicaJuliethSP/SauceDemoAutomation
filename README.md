@@ -45,8 +45,7 @@ SauceDemoAutomation/
 │       ├── RemoveCartItemsTest.java
 │       └── LogoutTest.java
 ├── src/test/resources/
-│   ├── allure.properties           # Dirige los resultados Allure a target/allure-results
-│   └── testng.xml                  # Suite de TestNG
+│   └── allure.properties           # Dirige los resultados Allure a target/allure-results
 ├── allure-results/                 # Generados por el adapter Allure (no versionados)
 ├── screenshots/                    # Generadas automáticamente en fallos (no versionadas)
 ├── pom.xml
@@ -59,7 +58,7 @@ SauceDemoAutomation/
 - **Page Object Model con Page Factory**: cada página está representada por una clase que usa anotaciones `@FindBy`. Los localizadores viven exclusivamente en las clases de páginas; las clases de pruebas nunca interactúan directamente con `WebElement`.
 - **Encadenamiento de métodos entre páginas**: cualquier método que dispara navegación devuelve el Page Object de la página siguiente (p. ej., `login()` devuelve `InventoryPage`), manteniendo las pruebas fluidas y desacopladas de los detalles de implementación.
 - **Clases base compartidas**: `BaseTest` centraliza la gestión del ciclo de vida de WebDriver; `BasePage` centraliza la inicialización de Page Factory y la funcionalidad entre páginas (menú de logout, disponible desde cualquier página con sesión iniciada).
-- **Esperas explícitas**: `BasePage` expone `waitForVisible()` sobre un `WebDriverWait` compartido (10 s), usado como punto de partida en las transiciones de página. En puntos puntuales del flujo de checkout donde se requieren condiciones distintas (p. ej., visibilidad de resumen en `CheckoutStepTwoPage`) se crean `WebDriverWait` adicionales con tiempos propios.
+- **Esperas explícitas**: `BasePage` expone `waitForVisible()` sobre un `WebDriverWait` compartido (10 s), usado como punto de partida en las transiciones de página. En puntos puntuales del flujo de checkout donde se requieren condiciones distintas (p. ej., clicabilidad del botón *Finish* en `CheckoutStepTwoPage`) se crean `WebDriverWait` adicionales con tiempos propios.
 - **Preferencias de Chrome**: la detección de fugas de contraseñas y el gestor de contraseñas se desactivan vía `ChromeOptions` para evitar que los diálogos nativos del navegador interfieran con la ejecución de las pruebas.
 - **Configuración externalizada**: la URL base y el modo headless se resuelven con la prioridad `propiedad del sistema -D` → `variable de entorno` → `valor por defecto`, de modo que la suite corre en cualquier máquina (incluidos agentes de CI) sin cambios de código.
 
@@ -99,7 +98,7 @@ mvn clean test -Dheadless=true -Dbase.url=https://www.saucedemo.com/
 
 ## Evidencia de pruebas
 
-Una captura de pantalla que confirma la ejecución exitosa de todos los escenarios de prueba (`Tests run: 4, Failures: 0`) está disponible en `screenshots/test-execution-success.png`.
+Una captura de pantalla que confirma la ejecución exitosa de todos los escenarios de prueba (`Tests run: 4, Failures: 0`) está disponible en `docs/evidencia/test-execution-success.png`.
 
 ## Pipeline CI/CD
 
