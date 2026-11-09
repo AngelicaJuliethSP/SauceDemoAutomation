@@ -40,7 +40,7 @@ public class CartPage extends BasePage {
     }
 
     public CheckoutStepOnePage checkout() {
-        checkoutButton.click();
+        waitForVisible(checkoutButton).click();
         return new CheckoutStepOnePage(driver);
     }
 }
