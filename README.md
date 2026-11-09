@@ -24,26 +24,31 @@ Este proyecto automatiza tres flujos de usuario principales de la aplicación we
 
 ```
 SauceDemoAutomation/
-├── src/
-│   ├── main/java/                  # Código a nivel de aplicación (actualmente sin uso)
-│   └── test/java/com/saucedemo/
-│       ├── base/
-│       │   ├── BaseTest.java       # Setup/teardown de WebDriver (@BeforeMethod/@AfterMethod)
-│       │   └── BasePage.java       # Inicialización de Page Factory, lógica compartida de logout
-│       ├── pages/
-│       │   ├── LoginPage.java
-│       │   ├── InventoryPage.java
-│       │   ├── CartPage.java
-│       │   ├── CheckoutStepOnePage.java
-│       │   ├── CheckoutStepTwoPage.java
-│       │   └── CheckoutCompletePage.java
-│       ├── listeners/
-│       │   └── ScreenshotListener.java  # Captura automática de pantallas en fallos
-│       └── tests/
-│           ├── PurchaseTest.java   # Usa @DataProvider para múltiples usuarios
-│           ├── RemoveCartItemsTest.java
-│           └── LogoutTest.java
-├── screenshots/                    # Generadas automáticamente en fallos de pruebas
+├── .github/
+│   └── workflows/
+│       └── ci.yml                  # Pipeline CI (push/PR/cron L-V) + publicación al dashboard
+├── src/test/java/com/saucedemo/
+│   ├── base/
+│   │   ├── BaseTest.java       # Setup/teardown de WebDriver (@BeforeMethod/@AfterMethod)
+│   │   └── BasePage.java       # Inicialización de Page Factory, lógica compartida de logout
+│   ├── pages/
+│   │   ├── LoginPage.java
+│   │   ├── InventoryPage.java
+│   │   ├── CartPage.java
+│   │   ├── CheckoutStepOnePage.java
+│   │   ├── CheckoutStepTwoPage.java
+│   │   └── CheckoutCompletePage.java
+│   ├── listeners/
+│   │   └── ScreenshotListener.java  # Captura automática de pantallas en fallos
+│   └── tests/
+│       ├── PurchaseTest.java   # Usa @DataProvider para múltiples usuarios
+│       ├── RemoveCartItemsTest.java
+│       └── LogoutTest.java
+├── src/test/resources/
+│   ├── allure.properties           # Dirige los resultados Allure a target/allure-results
+│   └── testng.xml                  # Suite de TestNG
+├── allure-results/                 # Generados por el adapter Allure (no versionados)
+├── screenshots/                    # Generadas automáticamente en fallos (no versionadas)
 ├── pom.xml
 ├── .gitignore
 └── README.md
@@ -54,7 +59,7 @@ SauceDemoAutomation/
 - **Page Object Model con Page Factory**: cada página está representada por una clase que usa anotaciones `@FindBy`. Los localizadores viven exclusivamente en las clases de páginas; las clases de pruebas nunca interactúan directamente con `WebElement`.
 - **Encadenamiento de métodos entre páginas**: cualquier método que dispara navegación devuelve el Page Object de la página siguiente (p. ej., `login()` devuelve `InventoryPage`), manteniendo las pruebas fluidas y desacopladas de los detalles de implementación.
 - **Clases base compartidas**: `BaseTest` centraliza la gestión del ciclo de vida de WebDriver; `BasePage` centraliza la inicialización de Page Factory y la funcionalidad entre páginas (menú de logout, disponible desde cualquier página con sesión iniciada).
-- **Esperas explícitas**: aplicadas en puntos específicos del flujo de checkout donde las transiciones de página resultaron poco confiables con ciertos usuarios de prueba de SauceDemo, usando `WebDriverWait` con `ExpectedConditions`.
+- **Esperas explícitas**: `BasePage` expone `waitForVisible()` sobre un `WebDriverWait` compartido (10 s), usado como punto de partida en las transiciones de página. En puntos puntuales del flujo de checkout donde se requieren condiciones distintas (p. ej., visibilidad de resumen en `CheckoutStepTwoPage`) se crean `WebDriverWait` adicionales con tiempos propios.
 - **Preferencias de Chrome**: la detección de fugas de contraseñas y el gestor de contraseñas se desactivan vía `ChromeOptions` para evitar que los diálogos nativos del navegador interfieran con la ejecución de las pruebas.
 - **Configuración externalizada**: la URL base y el modo headless se resuelven con la prioridad `propiedad del sistema -D` → `variable de entorno` → `valor por defecto`, de modo que la suite corre en cualquier máquina (incluidos agentes de CI) sin cambios de código.
 
