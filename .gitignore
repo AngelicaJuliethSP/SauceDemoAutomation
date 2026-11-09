@@ -7,3 +7,4 @@ target/
 *.log
 allure-results/
 allure-report/
+screenshots/

@@ -32,7 +32,11 @@ public class InventoryPage extends BasePage {
 
     public CartPage goToCart() {
         cartIcon.click();
-        return new CartPage(driver);
+        CartPage cartPage = new CartPage(driver);
+        // Espera activa a que la página del carrito cargue antes de devolver
+        // el objeto de página; evita que el test opere sobre la vista anterior.
+        cartPage.getCartItemsCount();
+        return cartPage;
     }
 
 }
