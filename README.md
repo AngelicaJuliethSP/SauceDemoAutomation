@@ -26,7 +26,7 @@ Este proyecto automatiza tres flujos de usuario principales de la aplicación we
 SauceDemoAutomation/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                  # Pipeline CI (push/PR/cron L-V) + publicación al dashboard
+│       └── ci.yml                  # Pipeline CI (push/PR/cron diario) + publicación al dashboard
 ├── src/test/java/com/saucedemo/
 │   ├── base/
 │   │   ├── BaseTest.java       # Setup/teardown de WebDriver (@BeforeMethod/@AfterMethod)

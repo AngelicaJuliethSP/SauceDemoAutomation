@@ -22,6 +22,10 @@ public class InventoryPage extends BasePage {
     }
 
     public void addRandomProductToCart() {
+        // La lista puede estar vacía si el inventario aún no ha cargado:
+        // nextInt(0) lanzaría IllegalArgumentException. Esperar a que haya
+        // elementos antes de elegir uno al azar.
+        wait.until(d -> !addToCartButtons.isEmpty());
         int randomIndex = new Random().nextInt(addToCartButtons.size());
         addToCartButtons.get(randomIndex).click();
     }
