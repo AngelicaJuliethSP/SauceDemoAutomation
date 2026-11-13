@@ -18,6 +18,7 @@ Este proyecto automatiza tres flujos de usuario principales de la aplicación we
 | Maven | 3.x | Compilación y gestión de dependencias |
 | Selenium WebDriver | 4.47.0 | Automatización del navegador |
 | TestNG | 7.10.2 | Ejecutor de pruebas y anotaciones |
+| Allure TestNG | 2.29.1 | Reportes de ejecución (target/allure-results/) |
 | Chrome | Última | Navegador objetivo |
 
 ## Estructura del proyecto
